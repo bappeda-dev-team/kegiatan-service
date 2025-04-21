@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kegiatan-service
+  labels:
+    app: kegiatan-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kegiatan-service
+  template:
+    metadata:
+      labels:
+        app: kegiatan-service
+    spec:
+      containers:
+        - name: kegiatan-service
+          image: kegiatan-service
+          imagePullPolicy: IfNotPresent
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 5" ]
+          ports:
+            - containerPort: 9002
+          env:
+            - name: BPL_JVM_THREAD_COUNT
+              value: "50"
+            - name: SPRING_R2DBC_URL
+              value: r2dbc:postgresql://kertaskerja-postgres:5432/kertaskerja_kegiatan
+            - name: SPRING_FLYWAY_URL
+              value: jdbc:postgresql://kertaskerja-postgres:5432/kertaskerja_kegiatan
+            - name: SPRING_PROFILES_ACTIVE
+              value: testdata

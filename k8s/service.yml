@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kegiatan-service
+  labels:
+    app: kegiatan-service
+spec:
+  type: ClusterIP
+  selector:
+    app: kegiatan-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9005
